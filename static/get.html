@@ -1,0 +1,23 @@
+
+<html>
+<body>
+User:<br>
+<input type="text" id="user" autofocus value="e1601136"><br>
+Password:<br>
+<input type="password" id="password" value="s1234567"><br>
+<button onClick="authenticate()">Login and list services</button>
+<br>
+<div id="id1"></div>
+<script>
+function authenticate(){
+	var request = new XMLHttpRequest();
+	request.open("GET", "http://localhost:8000/persons", false);
+	var user_and_pass = document.getElementById("user").value + ":" +  document.getElementById("password").value;
+	request.setRequestHeader("Authorization", "Basic " + btoa("e1601136:tGwPETZpRNZj"));
+	request.send();
+	var array = JSON.parse(request.responseText);
+	document.getElementById("id1").innerHTML= "The response from RESTful server was <br><br>"  + JSON.stringify(array);
+}
+</script>
+</body>
+</html>

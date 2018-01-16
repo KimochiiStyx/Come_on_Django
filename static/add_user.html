@@ -1,0 +1,84 @@
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<style>
+		#class td
+		{  
+			vertical-align: middle;
+			text-align: center;  
+		}
+	</style>	
+	<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	
+	</head>
+<body>
+	<div id="class" align="center" style= "margin: 0cm 0cm 0pt; text-align: left">
+		<table class="form-horizontal">
+				<tr class="form-group">
+					<td>
+						Name
+					</td>
+					<td>
+						<input type="text" class="form-control" id="name">
+					</td>
+					
+				</tr>
+				<tr class="form-group">
+					<td>
+						Phone
+					</td>
+					<td>
+						<input type="text" id="phone"  class="form-control">
+					</td>
+				</tr>
+				<tr class="form-group">
+					<td>
+						Email
+					</td>
+					<td>
+						<input type="text" id="email"  class="form-control">
+					</td>
+				</tr>
+				<tr class="form-group">
+					<td>
+						<button onClick="postPersons()" class="btn btn-info">Add User</button>
+					</td>
+				</tr>
+		</table>
+	</div>
+	<script>
+		function postPersons(){
+			var userName=document.getElementById("name");
+			var userPhone=document.getElementById("phone");
+			var userEmail=document.getElementById("email");
+			var jsonData = '{"name":' + JSON.stringify(userName.value) + 
+						   ', "phone":' + JSON.stringify(userPhone.value) +  
+						   ', "email":' + JSON.stringify(userEmail.value) + 
+						   ' }';
+			var request = new XMLHttpRequest();
+			request.open("POST", "http://localhost:8000/persons/", false);
+			request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+			request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+			request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			request.send(jsonData);
+			var array = JSON.parse(request.responseText);
+			console.log(array);
+		}
+		 
+		function readCookie(name) {
+			var nameEQ = encodeURIComponent(name) + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+			}
+			return null;
+		}
+	</script>
+	
+</body>
+</html>
